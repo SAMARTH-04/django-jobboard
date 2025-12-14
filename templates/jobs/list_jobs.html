@@ -1,0 +1,11 @@
+<h2>Job Listings</h2>
+{% for job in jobs %}
+    <div style="border:1px solid #000; margin:10px; padding:10px;">
+        <h3>{{ job.title }} at {{ job.company_name }}</h3>
+        <p>{{ job.description }}</p>
+        <p>Location: {{ job.location }}</p>
+        <p>Posted by: {{ job.posted_by.username }}</p>
+    </div>
+{% empty %}
+    <p>No jobs available.</p>
+{% endfor %}
