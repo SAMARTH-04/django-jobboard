@@ -1,0 +1,11 @@
+<h2>Applicants for {{ job.title }}</h2>
+
+{% for app in applications %}
+    <p>
+        {{ app.applicant.username }} |
+        {{ app.status }} |
+        <a href="{{ app.resume.url }}">Resume</a>
+    </p>
+{% empty %}
+    <p>No applications yet.</p>
+{% endfor %}

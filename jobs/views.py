@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Job
 from .decorators import recruiter_required
+from applications.models import Application
 
 @recruiter_required
 def post_job(request):
@@ -20,10 +21,24 @@ def post_job(request):
         return redirect("jobs:list_jobs")
 
     return render(request, "jobs/post_job.html")
-    
+
 def list_jobs(request):
     jobs = Job.objects.all().order_by("-created_at")
     return render(request, "jobs/list_jobs.html", {"jobs": jobs})
+
+
+def job_applicants(request, job_id):
+    job = Job.objects.get(id=job_id)
+
+    if request.user != job.posted_by:
+        return render(request, "403.html")
+
+    applications = job.applications.select_related("applicant")
+    return render(request, "jobs/applicants.html", {
+        "job": job,
+        "applications": applications
+    })
+
 
 
 
