@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block title %}Jobs{% endblock %}
+{% block content %}
 <h2>Job Listings</h2>
 {% for job in jobs %}
     <div style="border:1px solid #000; margin:10px; padding:10px;">
@@ -12,3 +16,15 @@
 {% empty %}
     <p>No jobs available.</p>
 {% endfor %}
+{% if jobs.has_other_pages %}
+    {% if jobs.has_previous %}
+        <a href="?page={{ jobs.previous_page_number }}">Prev</a>
+    {% endif %}
+
+    Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}
+
+    {% if jobs.has_next %}
+        <a href="?page={{ jobs.next_page_number }}">Next</a>
+    {% endif %}
+{% endif %}
+{% endblock %}

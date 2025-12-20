@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Job
 from .decorators import recruiter_required
 from applications.models import Application
+from django.core.paginator import Paginator
 
 @recruiter_required
 def post_job(request):
@@ -22,9 +23,16 @@ def post_job(request):
 
     return render(request, "jobs/post_job.html")
 
+
 def list_jobs(request):
     jobs = Job.objects.all().order_by("-created_at")
+    paginator = Paginator(jobs, 5)
+
+    page = request.GET.get("page")
+    jobs = paginator.get_page(page)
+
     return render(request, "jobs/list_jobs.html", {"jobs": jobs})
+
 
 
 def job_applicants(request, job_id):

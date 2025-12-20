@@ -5,6 +5,11 @@
         {{ app.applicant.username }} |
         {{ app.status }} |
         <a href="{{ app.resume.url }}">Resume</a>
+
+        {% if app.status == "applied" %}
+            <a href="{% url 'applications:update_status' app.id 'shortlisted' %}">Shortlist</a>
+            <a href="{% url 'applications:update_status' app.id 'rejected' %}">Reject</a>
+        {% endif %}
     </p>
 {% empty %}
     <p>No applications yet.</p>

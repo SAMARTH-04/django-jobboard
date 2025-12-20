@@ -23,3 +23,17 @@ def apply_job(request, job_id):
         return redirect("jobs:list_jobs")
 
     return render(request, "applications/apply_job.html", {"job": job})
+
+@login_required
+def update_status(request, app_id, status):
+    application = get_object_or_404(Application, id=app_id)
+
+    if request.user != application.job.posted_by:
+        return render(request, "403.html")
+
+    if status not in ['shortlisted', 'rejected']:
+        return redirect("jobs:list_jobs")
+
+    application.status = status
+    application.save()
+    return redirect("jobs:job_applicants", job_id=application.job.id)
