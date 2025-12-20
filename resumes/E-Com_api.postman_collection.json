@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "631d75fe-b9d6-43ee-aa89-27e9da2b670b",
+		"name": "E-Com api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49573580",
+		"_collection_link": "https://forstudies413-1083704.postman.co/workspace/For-Studies's-Workspace~c85c4f5f-72f1-48f6-86da-2981c37b0065/collection/49573580-631d75fe-b9d6-43ee-aa89-27e9da2b670b?action=share&source=collection_link&creator=49573580"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"pallavi@yopmail.com\",\n    \"password\": \"admin@12345\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://www.b2b.local/rest_api/login",
+					"protocol": "http",
+					"host": [
+						"www",
+						"b2b",
+						"local"
+					],
+					"path": [
+						"rest_api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send-otp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\":\"pallavi@yopmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://www.b2b.local/rest_api/send-otp",
+					"protocol": "http",
+					"host": [
+						"www",
+						"b2b",
+						"local"
+					],
+					"path": [
+						"rest_api",
+						"send-otp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify-otp",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NjE1NTg0NTEsImV4cCI6MTc2MTkxODQ1MSwic3ViIjo1NzQsInVzZXJuYW1lIjoicGFsbGF2aUB5b3BtYWlsLmNvbSIsInNlc3Npb25JZCI6IjI5NDZhZGExODA1ZjQ2ZWYxMjRkZTEzZTg2NTQwYzJhZjc2MjQwOWUyNzdlOGRlNjMzNTQ3M2JmNTIyYTU5ODQifQ.3Y679uaR1-kpgk2h3YKs3bH1V9e6aDDx1XV3y83KXWA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "session_id",
+						"value": "1111",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userid\": \"574\",\n  \"otp\": \"880052\",\n  \"verifyType\": \"login\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://www.b2b.local/rest_api/verify-otp",
+					"protocol": "http",
+					"host": [
+						"www",
+						"b2b",
+						"local"
+					],
+					"path": [
+						"rest_api",
+						"verify-otp"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

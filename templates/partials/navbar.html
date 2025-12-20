@@ -2,18 +2,16 @@
     <a href="{% url 'jobs:list_jobs' %}">Jobs</a>
 
     {% if user.is_authenticated %}
-
         {% if user.role == "recruiter" %}
-            <a href="{% url 'jobs:post_job' %}">Post Job</a>
+            <a href="{% url 'accounts:recruiter_profile' %}">My Profile</a>
+        {% else %}
+            <a href="{% url 'accounts:applicant_profile' %}">My Profile</a>
         {% endif %}
 
-        <a href="{% url 'accounts:dashboard' %}">Dashboard</a>
-
-        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit">Logout</button>
         </form>
-
     {% else %}
         <a href="{% url 'login' %}">Login</a>
         <a href="{% url 'accounts:signup' %}">Signup</a>

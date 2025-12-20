@@ -4,6 +4,8 @@ from django.contrib.auth import login
 from .models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from jobs.models import Job
+from applications.models import Application
 
 def signup(request):
     if request.method == "POST":
@@ -33,4 +35,28 @@ def signup(request):
 @login_required
 def dashboard(request):
     return render(request, "accounts/dashboard.html")
+
+@login_required
+def recruiter_profile(request):
+    if request.user.role != "recruiter":
+        return render(request, "403.html")
+
+    jobs = Job.objects.filter(posted_by=request.user).prefetch_related("applications")
+
+    return render(request, "accounts/recruiter_profile.html", {
+        "recruiter": request.user,
+        "jobs": jobs
+    })
+
+@login_required
+def applicant_profile(request):
+    if request.user.role != "seeker":
+        return render(request, "403.html")
+
+    applications = Application.objects.filter(applicant=request.user).select_related("job")
+
+    return render(request, "accounts/applicant_profile.html", {
+        "user": request.user,
+        "applications": applications
+    })
 

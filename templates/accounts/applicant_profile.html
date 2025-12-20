@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ user.username }}</h2>
+
+{% if user.photo %}
+<img src="{{ user.photo.url }}" width="120">
+{% endif %}
+
+<p>{{ user.description }}</p>
+
+<h3>Applied Jobs</h3>
+
+{% for app in applications %}
+    <p>
+        {{ app.job.title }} — <strong>{{ app.status }}</strong>
+    </p>
+{% empty %}
+    <p>No applications yet.</p>
+{% endfor %}
+{% endblock %}
