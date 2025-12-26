@@ -1,19 +1,61 @@
-<nav>
-    <a href="{% url 'jobs:list_jobs' %}">Jobs</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <!-- Brand -->
+        <a class="navbar-brand fw-semibold" href="{% url 'jobs:list_jobs' %}">
+            JobBoard
+        </a>
 
-    {% if user.is_authenticated %}
-        {% if user.role == "recruiter" %}
-            <a href="{% url 'accounts:recruiter_profile' %}">My Profile</a>
-        {% else %}
-            <a href="{% url 'accounts:applicant_profile' %}">My Profile</a>
-        {% endif %}
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
-    {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'accounts:signup' %}">Signup</a>
-    {% endif %}
+        <!-- Links -->
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+
+                <!-- Common Link -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'jobs:list_jobs' %}">Jobs</a>
+                </li>
+
+                {% if user.is_authenticated %}
+                    {% if user.role == "recruiter" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:recruiter_profile' %}">
+                                My Profile
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:applicant_profile' %}">
+                                My Profile
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <!-- Logout -->
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'logout' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-light btn-sm">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="btn btn-primary btn-sm ms-lg-2" href="{% url 'accounts:signup' %}">
+                            Signup
+                        </a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
 </nav>

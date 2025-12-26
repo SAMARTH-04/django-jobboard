@@ -1,37 +1,96 @@
 {% extends "base.html" %}
 
+{% block title %}Recruiter Profile{% endblock %}
+
 {% block content %}
-<h2>{{ recruiter.username }}</h2>
+<div class="row">
+    <!-- Recruiter Profile -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0 text-center">
+            <div class="card-body p-4">
 
-{% if recruiter.photo %}
-<img src="{{ recruiter.photo.url }}" width="120">
-{% endif %}
+                {% if recruiter.photo %}
+                    <img
+                        src="{{ recruiter.photo.url }}"
+                        class="rounded-circle mb-3"
+                        width="120"
+                        height="120"
+                        alt="Profile Photo"
+                    >
+                {% else %}
+                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
+                         style="width:120px; height:120px;">
+                        {{ recruiter.username|first|upper }}
+                    </div>
+                {% endif %}
 
-<p>{{ recruiter.description }}</p>
+                <h5 class="fw-semibold mb-2">{{ recruiter.username }}</h5>
 
-<h3>My Jobs</h3>
+                {% if recruiter.description %}
+                    <p class="text-muted small">
+                        {{ recruiter.description }}
+                    </p>
+                {% endif %}
 
-{% for job in jobs %}
-    <h4>{{ job.title }}</h4>
+            </div>
+        </div>
+    </div>
 
-    {% for app in job.applications.all %}
-        <p>
-            {{ app.applicant.username }}
+    <!-- Jobs & Applications -->
+    <div class="col-md-8">
+        {% for job in jobs %}
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body p-4">
 
-            <form method="post"
-                  action="{% url 'applications:update_status' app.id %}">
-                {% csrf_token %}
-                <select name="status">
-                    <option value="applied" {% if app.status == "applied" %}selected{% endif %}>Applied</option>
-                    <option value="shortlisted" {% if app.status == "shortlisted" %}selected{% endif %}>Shortlisted</option>
-                    <option value="rejected" {% if app.status == "rejected" %}selected{% endif %}>Rejected</option>
-                </select>
-                <button type="submit">Update</button>
-            </form>
-        </p>
-    {% empty %}
-        <p>No applicants yet</p>
-    {% endfor %}
+                    <h5 class="fw-semibold mb-3">
+                        {{ job.title }}
+                    </h5>
 
-{% endfor %}
+                    {% for app in job.applications.all %}
+                        <div class="row align-items-center border-bottom py-2">
+                            <div class="col-md-5">
+                                <strong>{{ app.applicant.username }}</strong>
+                            </div>
+
+                            <div class="col-md-7">
+                                <form
+                                    method="post"
+                                    action="{% url 'applications:update_status' app.id %}"
+                                    class="d-flex gap-2"
+                                >
+                                    {% csrf_token %}
+
+                                    <select name="status" class="form-select form-select-sm">
+                                        <option value="applied" {% if app.status == "applied" %}selected{% endif %}>
+                                            Applied
+                                        </option>
+                                        <option value="shortlisted" {% if app.status == "shortlisted" %}selected{% endif %}>
+                                            Shortlisted
+                                        </option>
+                                        <option value="rejected" {% if app.status == "rejected" %}selected{% endif %}>
+                                            Rejected
+                                        </option>
+                                    </select>
+
+                                    <button type="submit" class="btn btn-sm btn-primary">
+                                        Update
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted mb-0">
+                            No applicants yet.
+                        </p>
+                    {% endfor %}
+
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted">
+                You haven’t posted any jobs yet.
+            </p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

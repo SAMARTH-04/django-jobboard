@@ -1,16 +1,65 @@
-<h2>Applicants for {{ job.title }}</h2>
+{% extends "base.html" %}
 
-{% for app in applications %}
-    <p>
-        {{ app.applicant.username }} |
-        {{ app.status }} |
-        <a href="{{ app.resume.url }}">Resume</a>
+{% block title %}Applicants{% endblock %}
 
-        {% if app.status == "applied" %}
-            <a href="{% url 'applications:update_status' app.id 'shortlisted' %}">Shortlist</a>
-            <a href="{% url 'applications:update_status' app.id 'rejected' %}">Reject</a>
-        {% endif %}
-    </p>
-{% empty %}
-    <p>No applications yet.</p>
-{% endfor %}
+{% block content %}
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+
+        <h4 class="fw-semibold mb-4">
+            Applicants for {{ job.title }}
+        </h4>
+
+        {% for app in applications %}
+            <div class="row align-items-center border-bottom py-2">
+                <div class="col-md-3 fw-semibold">
+                    {{ app.applicant.username }}
+                </div>
+
+                <div class="col-md-2">
+                    <span class="badge bg-secondary">
+                        {{ app.status }}
+                    </span>
+                </div>
+
+                <div class="col-md-2">
+                    <a
+                        href="{{ app.resume.url }}"
+                        class="btn btn-sm btn-outline-primary"
+                        target="_blank"
+                    >
+                        Resume
+                    </a>
+                </div>
+
+                <div class="col-md-5">
+                    {% if app.status == "applied" %}
+                        <a
+                            href="{% url 'applications:update_status' app.id 'shortlisted' %}"
+                            class="btn btn-sm btn-success me-2"
+                        >
+                            Shortlist
+                        </a>
+
+                        <a
+                            href="{% url 'applications:update_status' app.id 'rejected' %}"
+                            class="btn btn-sm btn-danger"
+                        >
+                            Reject
+                        </a>
+                    {% else %}
+                        <span class="text-muted small">
+                            No action available
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted mb-0">
+                No applications yet.
+            </p>
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock %}

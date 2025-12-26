@@ -1,3 +1,29 @@
-<h3>You have already applied to this job.</h3>
-<a href="/jobs/">Back to jobs</a>
+{% extends "base.html" %}
 
+{% block title %}Already Applied{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 text-center">
+            <div class="card-body p-4">
+
+                <div class="mb-3 fs-1">ℹ️</div>
+
+                <h5 class="fw-semibold mb-3">
+                    You’ve already applied for this job
+                </h5>
+
+                <p class="text-muted mb-4">
+                    Our records show that your application has already been submitted.
+                </p>
+
+                <a href="/jobs/" class="btn btn-primary">
+                    Back to Jobs
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

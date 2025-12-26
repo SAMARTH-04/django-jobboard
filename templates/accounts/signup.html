@@ -1,31 +1,76 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Signup</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<h2>Signup</h2>
+{% block title %}Signup{% endblock %}
 
-<form method="post">
-    {% csrf_token %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
 
-    <input type="text" name="username" placeholder="Username" required><br><br>
-    <input type="email" name="email" placeholder="Email" required><br><br>
-    <input type="password" name="password" placeholder="Password" required><br><br>
+                <h3 class="text-center mb-4 fw-semibold">Create an Account</h3>
 
-    <select name="role" required>
-        <option value="">Select Role</option>
-        <option value="seeker">Job Seeker</option>
-        <option value="recruiter">Recruiter</option>
-    </select><br><br>
+                <form method="post" novalidate>
+                    {% csrf_token %}
 
-    <button type="submit">Signup</button>
-</form>
-<p>
-    Already have an account?
-    <a href="{% url 'login' %}">Login here</a>
-</p>
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input
+                            type="text"
+                            name="username"
+                            class="form-control"
+                            placeholder="Enter username"
+                            required
+                        >
+                    </div>
 
-</body>
-</html>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="Enter email"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Enter password"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Role</label>
+                        <select name="role" class="form-select" required>
+                            <option value="">Select Role</option>
+                            <option value="seeker">Job Seeker</option>
+                            <option value="recruiter">Recruiter</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            Signup
+                        </button>
+                    </div>
+                </form>
+
+                <p class="text-center mt-3 mb-0">
+                    Already have an account?
+                    <a href="{% url 'login' %}" class="text-decoration-none">
+                        Login here
+                    </a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

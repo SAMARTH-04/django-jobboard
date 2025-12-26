@@ -1,21 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<h2>Login</h2>
+{% block title %}Login{% endblock %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
-<p>
-    Don’t have an account?
-    <a href="{% url 'accounts:signup' %}">Sign up here</a>
-</p>
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
 
-</body>
-</html>
+                <h3 class="text-center mb-4 fw-semibold">Login</h3>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+                    <div class="d-grid mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            Login
+                        </button>
+                    </div>
+                </form>
+
+                <p class="text-center mt-3 mb-0">
+                    Don’t have an account?
+                    <a href="{% url 'accounts:signup' %}" class="text-decoration-none">
+                        Sign up here
+                    </a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

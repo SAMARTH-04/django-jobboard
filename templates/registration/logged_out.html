@@ -1,2 +1,29 @@
-<h2>You have been logged out</h2>
-<a href="{% url 'login' %}">Login again</a>
+{% extends "base.html" %}
+
+{% block title %}Logged Out{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 text-center">
+            <div class="card-body p-4">
+
+                <div class="mb-3 fs-1">👋</div>
+
+                <h5 class="fw-semibold mb-3">
+                    You have been logged out
+                </h5>
+
+                <p class="text-muted mb-4">
+                    Thank you for using JobBoard. We hope to see you again soon.
+                </p>
+
+                <a href="{% url 'login' %}" class="btn btn-primary">
+                    Login again
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
