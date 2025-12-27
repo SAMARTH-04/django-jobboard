@@ -34,25 +34,24 @@
 
                 <div class="col-md-5">
                     {% if app.status == "applied" %}
-                        <a
-                            href="{% url 'applications:update_status' app.id 'shortlisted' %}"
-                            class="btn btn-sm btn-success me-2"
-                        >
-                            Shortlist
-                        </a>
+                        <form method="post" action="{% url 'applications:update_status' app.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="shortlisted">
+                            <button type="submit" class="btn btn-sm btn-success me-2">Shortlist</button>
+                        </form>
 
-                        <a
-                            href="{% url 'applications:update_status' app.id 'rejected' %}"
-                            class="btn btn-sm btn-danger"
-                        >
-                            Reject
-                        </a>
+                        <form method="post" action="{% url 'applications:update_status' app.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="rejected">
+                            <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                        </form>
                     {% else %}
                         <span class="text-muted small">
                             No action available
                         </span>
                     {% endif %}
                 </div>
+
             </div>
         {% empty %}
             <p class="text-muted mb-0">

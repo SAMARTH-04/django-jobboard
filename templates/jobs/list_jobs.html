@@ -40,6 +40,12 @@
         No jobs available.
     </p>
 {% endfor %}
+<div class="text-end mb-3">
+    <br></br>
+    <a href="{% url 'jobs:post_job' %}" class="btn btn-success">
+        + Post New Job
+    </a>
+</div>
 
 <!-- Pagination -->
 {% if jobs.has_other_pages %}

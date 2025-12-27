@@ -34,7 +34,32 @@ def signup(request):
 
 @login_required
 def dashboard(request):
-    return render(request, "accounts/dashboard.html")
+    user = request.user
+    context = {}
+
+    if user.role == "seeker":
+        applications = Application.objects.filter(applicant=user)
+
+        context.update({
+            "total_applications": applications.count(),
+            "shortlisted_count": applications.filter(status="shortlisted").count(),
+            "rejected_count": applications.filter(status="rejected").count(),
+            "recent_applications": applications.order_by("-id")[:5],
+        })
+
+    elif user.role == "recruiter":
+        jobs = Job.objects.filter(posted_by=user)
+        applications = Application.objects.filter(job__posted_by=user)
+
+        context.update({
+            "jobs_count": jobs.count(),
+            "total_applicants": applications.count(),
+            "pending_applications": applications.filter(status="applied").count(),
+            "recent_applications": applications.order_by("-id")[:5],
+        })
+
+    return render(request, "accounts/dashboard.html", context)
+
 
 @login_required
 def recruiter_profile(request):

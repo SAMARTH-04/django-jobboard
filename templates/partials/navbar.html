@@ -10,29 +10,44 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Links -->
         <div class="collapse navbar-collapse" id="mainNavbar">
             <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
 
-                <!-- Common Link -->
+                <!-- Public -->
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'jobs:list_jobs' %}">Jobs</a>
                 </li>
 
                 {% if user.is_authenticated %}
+
+                    <!-- Dashboard -->
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="{% url 'accounts:dashboard' %}">
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <!-- Recruiter-only -->
                     {% if user.role == "recruiter" %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:recruiter_profile' %}">
-                                My Profile
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:applicant_profile' %}">
-                                My Profile
+                            <a class="btn btn-success btn-sm" href="{% url 'jobs:post_job' %}">
+                                + Post Job
                             </a>
                         </li>
                     {% endif %}
+
+                    <!-- Profile -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="
+                            {% if user.role == 'recruiter' %}
+                                {% url 'accounts:recruiter_profile' %}
+                            {% else %}
+                                {% url 'accounts:applicant_profile' %}
+                            {% endif %}
+                        ">
+                            My Profile
+                        </a>
+                    </li>
 
                     <!-- Logout -->
                     <li class="nav-item">
@@ -43,13 +58,14 @@
                             </button>
                         </form>
                     </li>
+
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Login</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="btn btn-primary btn-sm ms-lg-2" href="{% url 'accounts:signup' %}">
+                        <a class="btn btn-primary btn-sm" href="{% url 'accounts:signup' %}">
                             Signup
                         </a>
                     </li>
