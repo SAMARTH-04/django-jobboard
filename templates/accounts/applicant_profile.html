@@ -3,63 +3,84 @@
 {% block title %}My Profile{% endblock %}
 
 {% block content %}
-<div class="row">
-    <!-- Profile Section -->
-    <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0 text-center">
-            <div class="card-body p-4">
+<div class="container mt-4">
+    <div class="row">
 
-                {% if user.photo %}
-                    <img
-                        src="{{ user.photo.url }}"
-                        class="rounded-circle mb-3"
-                        width="120"
-                        height="120"
-                        alt="Profile Photo"
-                    >
-                {% else %}
-                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
-                         style="width:120px; height:120px;">
-                        {{ user.username|first|upper }}
-                    </div>
-                {% endif %}
+        <!-- PROFILE CARD -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 text-center">
+                <div class="card-body p-4">
 
-                <h5 class="fw-semibold mb-1">{{ user.username }}</h5>
-
-                {% if user.description %}
-                    <p class="text-muted small">
-                        {{ user.description }}
-                    </p>
-                {% endif %}
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Applied Jobs Section -->
-    <div class="col-md-8">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-4">
-
-                <h5 class="fw-semibold mb-3">Applied Jobs</h5>
-
-                {% for app in applications %}
-                    <div class="d-flex justify-content-between align-items-center border-bottom py-2">
-                        <div>
-                            <strong>{{ app.job.title }}</strong>
+                    {% if user.applicant_profile.profile_image %}
+                        <img
+                            src="{{ user.applicant_profile.profile_image.url }}"
+                            class="rounded-circle mb-3"
+                            width="120"
+                            height="120"
+                            alt="Profile Photo"
+                        >
+                    {% else %}
+                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
+                             style="width:120px; height:120px;">
+                            {{ user.username|first|upper }}
                         </div>
-                        <span class="badge bg-info text-dark">
-                            {{ app.status }}
-                        </span>
-                    </div>
-                {% empty %}
-                    <p class="text-muted mb-0">
-                        No applications yet.
-                    </p>
-                {% endfor %}
+                    {% endif %}
 
+                    <h5 class="fw-semibold mb-1">{{ user.username }}</h5>
+                    <p class="text-muted small mb-2">{{ user.email }}</p>
+
+                    {% if user.applicant_profile.summary %}
+                        <p class="text-muted mb-1">{{ user.applicant_profile.summary }}</p>
+                    {% else %}
+                        <p class="text-muted mb-1 fst-italic">No profile summary added yet.</p>
+                    {% endif %}
+
+                    {% if user.applicant_profile.skills %}
+                        <p class="text-muted small">Skills: {{ user.applicant_profile.skills }}</p>
+                    {% else %}
+                        <p class="text-muted small fst-italic">No skills added yet.</p>
+                    {% endif %}
+
+                    <a href="{% url 'accounts:edit_profile' %}"
+                       class="btn btn-outline-primary btn-sm mt-2">
+                        Edit Profile
+                    </a>
+
+                </div>
             </div>
         </div>
+
+        <!-- APPLIED JOBS -->
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                    <h5 class="fw-semibold mb-3">Applied Jobs</h5>
+
+                    {% for app in applications %}
+                        <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                            <div>
+                                <strong>{{ app.job.title }}</strong><br>
+                                <small class="text-muted">{{ app.job.company_name }}</small>
+                            </div>
+
+                            <span class="badge
+                                {% if app.status == 'shortlisted' %} bg-success
+                                {% elif app.status == 'rejected' %} bg-danger
+                                {% else %} bg-secondary
+                                {% endif %}
+                                text-uppercase">
+                                {{ app.status }}
+                            </span>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted mb-0">You haven’t applied to any jobs yet.</p>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 {% endblock %}

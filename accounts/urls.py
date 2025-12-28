@@ -8,5 +8,7 @@ urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
     path("recruiter/profile/", views.recruiter_profile, name="recruiter_profile"),
     path("applicant/profile/", views.applicant_profile, name="applicant_profile"),
+    path("profile/edit/", views.edit_profile, name="edit_profile"),
+
 
 ]

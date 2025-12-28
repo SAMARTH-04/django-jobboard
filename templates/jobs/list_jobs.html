@@ -40,12 +40,14 @@
         No jobs available.
     </p>
 {% endfor %}
-<div class="text-end mb-3">
-    <br></br>
-    <a href="{% url 'jobs:post_job' %}" class="btn btn-success">
-        + Post New Job
-    </a>
-</div>
+{% if user.is_authenticated and user.role == "recruiter" %}
+    <div class="text-end mb-3">
+        <br></br>
+        <a href="{% url 'jobs:post_job' %}" class="btn btn-success">
+            + Post New Job
+        </a>
+    </div>
+{% endif %}
 
 <!-- Pagination -->
 {% if jobs.has_other_pages %}

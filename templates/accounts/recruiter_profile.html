@@ -3,94 +3,118 @@
 {% block title %}Recruiter Profile{% endblock %}
 
 {% block content %}
-<div class="row">
-    <!-- Recruiter Profile -->
-    <div class="col-md-4 mb-4">
-        <div class="card shadow-sm border-0 text-center">
-            <div class="card-body p-4">
+<div class="container mt-4">
+    <div class="row">
 
-                {% if recruiter.photo %}
-                    <img
-                        src="{{ recruiter.photo.url }}"
-                        class="rounded-circle mb-3"
-                        width="120"
-                        height="120"
-                        alt="Profile Photo"
-                    >
-                {% else %}
-                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
-                         style="width:120px; height:120px;">
-                        {{ recruiter.username|first|upper }}
-                    </div>
-                {% endif %}
-
-                <h5 class="fw-semibold mb-2">{{ recruiter.username }}</h5>
-
-                {% if recruiter.description %}
-                    <p class="text-muted small">
-                        {{ recruiter.description }}
-                    </p>
-                {% endif %}
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Jobs & Applications -->
-    <div class="col-md-8">
-        {% for job in jobs %}
-            <div class="card shadow-sm border-0 mb-4">
+        <!-- RECRUITER PROFILE CARD -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 text-center">
                 <div class="card-body p-4">
 
-                    <h5 class="fw-semibold mb-3">
-                        {{ job.title }}
-                    </h5>
-
-                    {% for app in job.applications.all %}
-                        <div class="row align-items-center border-bottom py-2">
-                            <div class="col-md-5">
-                                <strong>{{ app.applicant.username }}</strong>
-                            </div>
-
-                            <div class="col-md-7">
-                                <form
-                                    method="post"
-                                    action="{% url 'applications:update_status' app.id %}"
-                                    class="d-flex gap-2"
-                                >
-                                    {% csrf_token %}
-
-                                    <select name="status" class="form-select form-select-sm">
-                                        <option value="applied" {% if app.status == "applied" %}selected{% endif %}>
-                                            Applied
-                                        </option>
-                                        <option value="shortlisted" {% if app.status == "shortlisted" %}selected{% endif %}>
-                                            Shortlisted
-                                        </option>
-                                        <option value="rejected" {% if app.status == "rejected" %}selected{% endif %}>
-                                            Rejected
-                                        </option>
-                                    </select>
-
-                                    <button type="submit" class="btn btn-sm btn-primary">
-                                        Update
-                                    </button>
-                                </form>
-                            </div>
+                    {% if user.recruiter_profile.company_logo %}
+                        <img
+                            src="{{ user.recruiter_profile.company_logo.url }}"
+                            class="rounded-circle mb-3"
+                            width="120"
+                            height="120"
+                            alt="Company Logo"
+                        >
+                    {% else %}
+                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
+                             style="width:120px; height:120px;">
+                            {{ user.username|first|upper }}
                         </div>
-                    {% empty %}
-                        <p class="text-muted mb-0">
-                            No applicants yet.
+                    {% endif %}
+
+                    <h5 class="fw-semibold mb-1">{{ user.recruiter_profile.company_name }}</h5>
+                    <p class="text-muted small mb-2">{{ user.email }}</p>
+
+                    {% if user.recruiter_profile.company_description %}
+                        <p class="text-muted mb-1">{{ user.recruiter_profile.company_description }}</p>
+                    {% else %}
+                        <p class="text-muted mb-1 fst-italic">No company description added yet.</p>
+                    {% endif %}
+
+                    {% if user.recruiter_profile.website %}
+                        <p class="text-muted small">
+                            Website: <a href="{{ user.recruiter_profile.website }}" target="_blank">{{ user.recruiter_profile.website }}</a>
                         </p>
-                    {% endfor %}
+                    {% endif %}
+
+                    <a href="{% url 'accounts:edit_profile' %}"
+                       class="btn btn-outline-primary btn-sm mt-2">
+                        Edit Profile
+                    </a>
 
                 </div>
             </div>
-        {% empty %}
-            <p class="text-muted">
-                You haven’t posted any jobs yet.
-            </p>
-        {% endfor %}
+        </div>
+
+        <!-- JOBS & APPLICANTS -->
+        <div class="col-md-8">
+
+            <h5 class="fw-semibold mb-3">Jobs Posted</h5>
+
+            {% for job in jobs %}
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body p-4">
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h6 class="fw-semibold mb-0">{{ job.title }}</h6>
+                                <small class="text-muted">
+                                    {{ job.applications.count }} applicant(s)
+                                </small>
+                            </div>
+                        </div>
+
+                        {% for app in job.applications.all %}
+                            <div class="row align-items-center border-top py-2">
+                                <div class="col-md-4">
+                                    <strong>{{ app.applicant.username }}</strong>
+                                </div>
+
+                                <div class="col-md-8">
+                                    <form
+                                        method="post"
+                                        action="{% url 'applications:update_status' app.id %}"
+                                        class="d-flex gap-2"
+                                    >
+                                        {% csrf_token %}
+
+                                        <select name="status" class="form-select form-select-sm">
+                                            <option value="applied" {% if app.status == "applied" %}selected{% endif %}>
+                                                Applied
+                                            </option>
+                                            <option value="shortlisted" {% if app.status == "shortlisted" %}selected{% endif %}>
+                                                Shortlisted
+                                            </option>
+                                            <option value="rejected" {% if app.status == "rejected" %}selected{% endif %}>
+                                                Rejected
+                                            </option>
+                                        </select>
+
+                                        <button type="submit" class="btn btn-sm btn-primary">
+                                            Update
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p class="text-muted mb-0">
+                                No applicants for this job yet.
+                            </p>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-muted">
+                    You haven’t posted any jobs yet.
+                </p>
+            {% endfor %}
+        </div>
+
     </div>
 </div>
 {% endblock %}

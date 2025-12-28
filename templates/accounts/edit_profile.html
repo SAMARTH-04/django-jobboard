@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+
+                <h4 class="fw-semibold mb-3">Edit Profile</h4>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label">{{ field.label }}</label>
+
+                            {# Show current image/file if it exists #}
+                            {% if field.name == "profile_image" or field.name == "company_logo" %}
+                                {% if field.value %}
+                                    <div class="mb-2">
+                                        <img src="{{ field.value.url }}" alt="Current Image" style="max-width: 100px; max-height: 100px;">
+                                    </div>
+                                {% endif %}
+                            {% elif field.name == "resume" %}
+                                {% if field.value %}
+                                    <div class="mb-2">
+                                        <a href="{{ field.value.url }}" target="_blank">Current Resume</a>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+
+                            {{ field|add_class:"form-control" }}
+
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary">
+                        Save Changes
+                    </button>
+
+                    <a href="{% url 'accounts:dashboard' %}"
+                       class="btn btn-outline-secondary ms-2">
+                        Cancel
+                    </a>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
