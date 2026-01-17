@@ -1,0 +1,93 @@
+INTERVIEW QUESTIONS & ANSWERS (PROJECT-SPECIFIC)
+
+These are very likely to be asked once you mention this project.
+
+1️⃣ Why did you create a custom User model instead of using Django’s default User?
+
+Answer:
+
+I needed role-based behavior (job seeker vs recruiter). Django recommends creating a custom user model early when roles or authentication logic differs. By extending AbstractUser, I added a role field and kept Django’s auth features intact.
+
+2️⃣ How did you manage different profiles for seekers and recruiters?
+
+Answer:
+
+I used OneToOne relationships.
+Each user has either an ApplicantProfile or RecruiterProfile, depending on their role. This keeps role-specific data separate and avoids unnecessary null fields in a single table.
+
+3️⃣ How are profiles created if users never filled profile details initially?
+
+Answer:
+
+Profile objects are created automatically (via signals or controlled creation flow).
+Fields like photo, summary, or company description are optional, so users can later update them through the Edit Profile form using ModelForms.
+
+4️⃣ How does the Edit Profile page work for different roles?
+
+Answer:
+
+The view checks request.user.role and dynamically selects the correct model and form (ApplicantProfileForm or RecruiterProfileForm).
+The same template is reused, which keeps the code DRY and maintainable.
+
+5️⃣ Why did you use Celery in this project?
+
+Answer:
+
+Email sending is a time-consuming operation.
+Using Celery allows email notifications to run asynchronously, preventing request blocking and improving user experience when recruiters update application statuses.
+
+6️⃣ Why did you choose Redis?
+
+Answer:
+
+Redis is fast, lightweight, and commonly used as a message broker with Celery.
+It works well for task queues and fits the project scale.
+
+7️⃣ What happens when a recruiter updates an application status?
+
+Answer:
+
+Status is updated synchronously in the database
+
+A Celery task is triggered
+
+The task sends an email notification to the applicant asynchronously
+
+This ensures fast UI response while still handling notifications reliably.
+
+8️⃣ What was the biggest challenge you faced?
+
+Answer (Very strong):
+
+Handling migrations with a custom user model and ensuring correct dependency order.
+I learned how Django migration dependencies work and how improper ordering can break auth-related tables.
+
+(Interviewers LOVE this answer.)
+
+9️⃣ How would this project scale?
+
+Answer:
+
+Move static/media to S3
+
+Use PostgreSQL indexing on job and application tables
+
+Run multiple Celery workers
+
+Add caching for job listings
+
+Convert some views to APIs if traffic grows
+
+🔟 What would you improve next?
+
+Answer:
+
+Add pagination and search filters
+
+Add REST APIs using Django REST Framework
+
+Add automated tests
+
+Improve permissions using custom decorators
+
+Deploy using Docker for consistency
