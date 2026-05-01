@@ -1,0 +1,6 @@
+scaling :
+1. soft delete - mark job listing as active inactive
+2. Vacancy criteria and JobID concept
+3. superadmin concept
+4. stop db url access
+5. 3rd party integrations

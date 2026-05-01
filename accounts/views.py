@@ -68,8 +68,15 @@ def recruiter_profile(request):
     if request.user.role != "recruiter":
         return render(request, "403.html")
 
+    # Active jobs (default manager returns active only)
     jobs = Job.objects.filter(
         posted_by=request.user
+    ).prefetch_related("applications")
+
+    # Inactive jobs (use all_objects to fetch soft-deleted entries)
+    inactive_jobs = Job.all_objects.filter(
+        posted_by=request.user,
+        is_active=False
     ).prefetch_related("applications")
 
     recruiter_profile = RecruiterProfile.objects.filter(
@@ -79,7 +86,8 @@ def recruiter_profile(request):
     return render(request, "accounts/recruiter_profile.html", {
         "recruiter": request.user,          # existing
         "profile": recruiter_profile,       # NEW
-        "jobs": jobs                         # existing
+        "jobs": jobs,                        # existing
+        "inactive_jobs": inactive_jobs
     })
 
 @login_required
